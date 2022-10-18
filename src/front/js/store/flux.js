@@ -21,6 +21,35 @@ const getState = ({ getStore, getActions, setStore }) => {
         getActions().changeColor(0, "green");
       },
 
+      login: async (email, password) => {
+        const opts = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        };
+        try {
+          const resp = await fetch(
+            "https://3001-ronald1710-authenticati-sndaru89tnz.ws-us71.gitpod.io/api/token",
+            opts
+          );
+          if (resp.status !== 200) {
+            alert("There has been some error");
+            return false;
+          }
+
+          const data = await resp.json();
+          console.log("There has been some error", data);
+          localStorage.setItem("token", data.access_token);
+          return true;
+        } catch (error) {
+          console.error("There has been an error login in");
+        }
+      },
       getMessage: async () => {
         try {
           // fetching data from the backend
